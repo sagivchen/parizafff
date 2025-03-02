@@ -104,19 +104,28 @@
         }
       }
 
-      function vote(type) {
-        const band = bands[index];
-        if (!(band in ratings)) {
-          ratings[band] = { likes: 0, unlikes: 0 };
-        }
-        if (type === "like") {
-          ratings[band].likes++;
-        } else {
-          ratings[band].unlikes++;
-        }
-        index++;
-        showBand();
-      }
+     function vote(type) {
+    const band = bands[index];
+    if (!(band in ratings)) {
+        ratings[band] = { likes: 0, unlikes: 0 };
+    }
+    if (type === "like") {
+        ratings[band].likes++;
+    } else {
+        ratings[band].unlikes++;
+    }
+
+    // שליחת הנתונים לגוגל שיטס
+    fetch("https://script.google.com/macros/s/AKfycbxnIWhCoHQ1TeBDXYtYJBKeT1O_Lte-4n8SVG1FDsrL1WmGtnl9n0As6Cde8zap1w7S-Q/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ band: band, vote: type })
+    });
+
+    index++;
+    showBand();
+}
+
 
       function showResults() {
         document.getElementById("band-card").style.display = "none";
